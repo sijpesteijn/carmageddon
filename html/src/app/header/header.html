@@ -1,0 +1,9 @@
+<header>
+    <ul>
+        <li><a [class.active]="car.mode === 0" href="#off" (click)="setCarMode(0)">Off</a></li>
+        <li><a [class.active]="car.mode === 1" href="#manual" (click)="setCarMode(1)">Manual</a></li>
+        <li><a [class.active]="car.mode === 2" href="#race" (click)="setCarMode(2)">Race</a></li>
+    </ul>
+    <car-status></car-status>
+    <lifeline></lifeline>
+</header>

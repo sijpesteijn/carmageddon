@@ -1,0 +1,14 @@
+{
+  "car": {
+    "mode": "http://carmageddon.dev/car/mode/:mode",
+    "engine": "http://carmageddon.dev/car/engine/:throttle",
+    "steer": "http://carmageddon.dev/car/steer/:angle"
+  },
+  "observer" : {
+    "get" : "http://carmageddon.dev/observer/:type"
+  },
+  "lifeline": {
+    "ws": "ws://localhost:1984/lifeline"
+  }
+
+}

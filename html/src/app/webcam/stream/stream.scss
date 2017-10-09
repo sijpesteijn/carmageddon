@@ -1,0 +1,41 @@
+@import '../../../styles/variables';
+
+.refreshRate {
+
+}
+
+.stream {
+  position: relative;
+  margin-right: 13px;
+  background-color: rebeccapurple;
+  width: 640px;
+  height: 480px;
+
+  .roi {
+    position: absolute;
+    border: 1px solid orange;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    z-index: 1;
+  }
+
+  .mask {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 640px;
+    height: 480px;
+  }
+
+  .webcam {
+    z-index: 0;
+    position: absolute;
+    border: 1px solid crimson;
+  }
+
+}
+
+
+

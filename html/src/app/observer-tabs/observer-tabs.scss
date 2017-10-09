@@ -1,0 +1,33 @@
+@import '../../styles/variables';
+
+.observer-tabs {
+  position: relative;
+  overflow: visible;
+
+  .tabs {
+    float: left;
+    list-style: none;
+    background-color: $background-color;
+    border: 1px solid $border-color;
+
+    li {
+      padding: $gutter * 0.5;
+
+      a {
+        text-decoration: none;
+        color: $nav-button-color;
+      }
+    }
+  }
+
+  .active {
+    background-color: $active-tab;
+  }
+
+  .tab {
+    float: left;
+    border: 1px solid $border-color;
+    background-color: $background-color;
+    padding: $gutter * 0.5;
+  }
+}

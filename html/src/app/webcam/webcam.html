@@ -1,0 +1,4 @@
+<div class="webcam">
+    <!--<div class="refreshRate">Refresh image: <input type="range" min="1" max="20" [(ngModel)]="interval"> {{ interval }} seconds.</div>-->
+    <stream #stream (onChange)="updateRoi($event)" [interval]="interval"></stream>
+</div>

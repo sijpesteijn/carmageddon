@@ -1,0 +1,19 @@
+
+.lifeline {
+  color: white;
+  float: right;
+  margin-right: 30px;
+  margin-top: 15px;
+
+  .heartbeat {
+    width: 13px;
+    height: 13px;
+    border-radius: 20px;
+    background-color: red;
+    position: absolute;
+    opacity: 0.3;
+  }
+  .full {
+    opacity: 1;
+  }
+}

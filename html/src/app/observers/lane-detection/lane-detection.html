@@ -1,0 +1,5 @@
+<ul *ngIf="observer" class="lane_detection_observer">
+    <li>Active: <input type="checkbox" [(ngModel)]="observer.active" (ngModelChange)="updateObserver()"></li>
+    <li><button [disabled]="observer.condition_achieved === 0" (click)="resetObserver()">Reset</button></li>
+    <li>Roi y: <input type="range" [min]=0 [max]="480" [(ngModel)]="observer?.roi.y" (ngModelChange)="setRoi()"> {{ observer?.roi.y }}</li>
+</ul>

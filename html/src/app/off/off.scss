@@ -1,0 +1,16 @@
+@import '../../styles/variables';
+
+.off {
+  float: left;
+  margin-top: 15px;
+  margin-left: 15px;
+  font-size: 4em;
+  font-weight: 600;
+  float: left;
+  width: 50%;
+
+  .details {
+    font-size: 0.5em;
+    font-weight: normal;
+  }
+}
