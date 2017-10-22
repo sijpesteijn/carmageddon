@@ -62,8 +62,8 @@ make install
 
 mkdir /usr/local/include/restbed
 cp -R ../distribution/include/* /usr/local/include/restbed
-cp ../distribution/library/librestbed.so.4.5.0 /usr/local/lib
-ln -s /usr/local/lib/librest.so.4.5.0 /usr/local/lib/librestbed.so.4
+cp ../distribution/library/librestbed.so.4.6.0 /usr/local/lib
+ln -s /usr/local/lib/librest.so.4.6.0 /usr/local/lib/librestbed.so.4
 ln -s /usr/local/lib/librest.so.4 /usr/local/lib/librestbed.so
 ldconfig
 
