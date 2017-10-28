@@ -28,8 +28,8 @@ void* frameGrabber(void* params) {
 }
 
 Camera::Camera():cap(0) {
-    this->cap.set(CV_CAP_PROP_FRAME_WIDTH,640);
-    this->cap.set(CV_CAP_PROP_FRAME_HEIGHT,480);
+    this->cap.set(CV_CAP_PROP_FRAME_WIDTH,352);
+    this->cap.set(CV_CAP_PROP_FRAME_HEIGHT,288);
 //	this->cap.set(CV_CAP_PROP_BUFFERSIZE,3);
 //	this->cap.set(CV_CAP_PROP_XI_BUFFERS_QUEUE_SIZE,3);
 
@@ -104,6 +104,6 @@ vector<Vec2f> Camera::detectLines(Mat img) {
 }
 
 Size Camera::getDimensions() {
-    return Size(640, 360);
-//	return Size(this->cap.get(CV_CAP_PROP_FRAME_WIDTH),this->cap.get(CV_CAP_PROP_FRAME_HEIGHT));
+//    return Size(640, 360);
+	return Size(this->cap.get(CV_CAP_PROP_FRAME_WIDTH),this->cap.get(CV_CAP_PROP_FRAME_HEIGHT));
 }
