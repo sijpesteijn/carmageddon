@@ -1,0 +1,11 @@
+<div class="camera-status">
+    Video:
+    size - <select (change)="updateDimensions($event)">
+                <option *ngFor="let dimension of dimensions"
+                        [value]="dimension.name"
+                        [innerHTML]="dimension.name"
+                        [selected]="cameraSettings.dimension.name === dimension.name"></option>
+            </select>
+    capture delay - <input type="number" min="10" step="10" [value]="cameraSettings?.captureDelay" (change)="updateCaptureDelay($event)"> ms.
+    preview delay - <input type="number" min="1" step="1" [value]="cameraSettings?.previewDelay/1000" (change)="updatePreviewDelay($event)"> sec.
+</div>

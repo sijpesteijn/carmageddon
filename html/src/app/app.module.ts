@@ -40,6 +40,8 @@ import {OffComponent} from "./off/off.component";
 import {HeaderComponent} from "./header/header.component";
 import {CarStatusComponent} from "./car-status/car-status.component";
 import {NgxVirtualJoystickModule} from "ngx-virtual-joystick";
+import {CameraStatusComponent} from "./camera-status/camera-status.component";
+import {CameraService} from "./camera.service";
 
 // Application wide providers
 const APP_PROVIDERS = [
@@ -78,7 +80,8 @@ if ('local' === process.env.CONTEXT) {
         NoContentComponent,
         OffComponent,
         HeaderComponent,
-        CarStatusComponent
+        CarStatusComponent,
+        CameraStatusComponent
     ],
     /**
      * Import Angular's modules.
@@ -102,6 +105,7 @@ if ('local' === process.env.CONTEXT) {
         APP_PROVIDERS,
         ...PROVIDERS,
         CarService,
+        CameraService,
         Config
     ]
 })

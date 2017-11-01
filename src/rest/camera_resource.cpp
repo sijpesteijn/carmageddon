@@ -4,18 +4,69 @@
 
 #include "camera_resource.h"
 #include <syslog.h>
-#include "rest.h"
+#include <jansson.h>
 using namespace cv;
 using namespace std;
 
-#define CAMERA_STATUS "/camera/status"
+#define CAMERA_SETTINGS "/camera/settings"
+#define CAMERA_DIMENSIONS "/camera/dimensions"
 #define CAMERA_SNAPSHOT "/camera/snapshot/{timestamp: .*}"
 Camera *camera;
 
-void get_camera_status_handler( const shared_ptr< Session > session)
+void get_camera_settings_handler(const shared_ptr<Session> session)
 {
-    const string body = ::to_string(camera->status());
+    const string body = "{\"dimension\":{\"name\": \"" + to_string(camera->getDimensions().width) + "x" + to_string(camera->getDimensions().height) + "\","
+                        + "\"width\":" + to_string(camera->getDimensions().width) + ","
+                        + "\"height\": " + to_string(camera->getDimensions().height) + "},"
+                        + "\"captureDelay\": " + to_string(camera->capture_delay) + ","
+                        + "\"previewDelay\": " + to_string(camera->preview_delay) + "}";
     session->close( OK, body, { { "Content-Length", ::to_string( body.size( ) ) } } );
+}
+
+void post_camera_settings_handler( const shared_ptr< Session > session )
+{
+    const auto request = session->get_request( );
+
+    int content_length = request->get_header( "Content-Length", 0 );
+
+    session->fetch( content_length, [ ]( const shared_ptr< Session > session, const Bytes & body )
+    {
+        fprintf( stdout, "%.*s\n", ( int ) body.size( ), body.data( ) );
+        json_t* root;
+        json_error_t error;
+
+        root = json_loadb(reinterpret_cast<const char *>(body.data()), body.size(), 0, &error);
+        if (!root) {
+            fprintf(stderr, "error: on line %d: %s\n", error.line, error.text);
+        }
+        if (!json_is_object(root)) {
+            fprintf(stderr, "error: commit data is not an object\n");
+            json_decref(root);
+        }
+        json_t *resolutionJson = json_object_get(root,"dimension");
+        int width = json_number_value(json_object_get(resolutionJson, "width"));
+        int height = json_number_value(json_object_get(resolutionJson, "height"));
+        camera->setDimension(width, height);
+        camera->capture_delay = json_number_value(json_object_get(root, "captureDelay"));
+        camera->preview_delay = json_number_value(json_object_get(root, "previewDelay"));
+
+        session->close( OK, body, { { "Content-Length", ::to_string( body.size( ) ) } } );
+    } );
+}
+
+void get_camera_dimensions_handler(const shared_ptr<Session> session)
+{
+    const string body = "[{\"name\": \"352x288\", \"width\": 352, \"height\": 288},{\"name\": \"640x480\", \"width\": 640, \"height\": 480}]";
+    session->close( OK, body, { { "Content-Length", ::to_string( body.size( ) ) } } );
+}
+
+string getSettingsJson() {
+    const string body = "{\"dimension\":{\"name\": \"" + to_string(camera->getDimensions().width) + "x" + to_string(camera->getDimensions().height) + "\","
+                        + "\"width\":" + to_string(camera->getDimensions().width) + ","
+                        + "\"height\": " + to_string(camera->getDimensions().height) + "},"
+                        + "\"captureDelay\": " + to_string(camera->capture_delay) + ","
+                        + "\"previewDelay\": " + to_string(camera->preview_delay) + "}";
+    return body;
 }
 
 void get_camera_snapshot_handler( const shared_ptr< Session > session)
@@ -47,9 +98,14 @@ void get_camera_snapshot_handler( const shared_ptr< Session > session)
 
 camera_resource::camera_resource(Camera *cam) {
     camera = cam;
-    this->cameraGetStatusResource->set_path( CAMERA_STATUS );
-    this->cameraGetStatusResource->set_method_handler( "GET", get_camera_status_handler );
-    syslog(LOG_DEBUG, "Restbed: %s",  CAMERA_STATUS);
+    this->cameraGetDimensionsResource->set_path( CAMERA_DIMENSIONS );
+    this->cameraGetDimensionsResource->set_method_handler("GET", get_camera_dimensions_handler);
+    syslog(LOG_DEBUG, "Restbed: %s",  CAMERA_DIMENSIONS);
+
+    this->cameraSettingsResource->set_path( CAMERA_SETTINGS );
+    this->cameraSettingsResource->set_method_handler("GET", get_camera_settings_handler);
+    this->cameraSettingsResource->set_method_handler("POST", post_camera_settings_handler);
+    syslog(LOG_DEBUG, "Restbed: %s",  CAMERA_SETTINGS);
 
     this->cameraSnapshotResource->set_path( CAMERA_SNAPSHOT );
     this->cameraSnapshotResource->set_method_handler( "GET", get_camera_snapshot_handler );
@@ -57,6 +113,10 @@ camera_resource::camera_resource(Camera *cam) {
 }
 
 list<shared_ptr<Resource>> camera_resource::getResources() {
-    list<shared_ptr<Resource>> l = { this->cameraSnapshotResource, this->cameraGetStatusResource };
+    list<shared_ptr<Resource>> l = {
+            this->cameraSnapshotResource,
+            this->cameraSettingsResource,
+            this->cameraGetDimensionsResource
+    };
     return l;
 }

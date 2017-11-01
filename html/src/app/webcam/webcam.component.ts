@@ -6,7 +6,7 @@ import { Component } from '@angular/core';
     styles: [require('./webcam.scss')]
 })
 export class WebcamComponent {
-    private interval = 10;
+
     private updateRoi(event) {
 
     }

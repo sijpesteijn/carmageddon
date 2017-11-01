@@ -22,12 +22,14 @@ void* frameGrabber(void* params) {
         if (pthread_mutex_unlock(&frame_lock) != 0) {
             syslog(LOG_ERR, "%s", "Sockethandler: Could not unlock the queue");
         }
-        std::this_thread::sleep_for(std::chrono::milliseconds(200));
+        std::this_thread::sleep_for(std::chrono::milliseconds(camera->capture_delay));
     }
     return NULL;
 }
 
 Camera::Camera():cap(0) {
+    this->cap.release();
+    this->cap.open(0);
     this->cap.set(CV_CAP_PROP_FRAME_WIDTH,352);
     this->cap.set(CV_CAP_PROP_FRAME_HEIGHT,288);
 //	this->cap.set(CV_CAP_PROP_BUFFERSIZE,3);
@@ -55,10 +57,6 @@ Camera::Camera():cap(0) {
 //	cout << "Rectification: " << this->cap.get(CV_CAP_PROP_RECTIFICATION) << endl;
     pthread_t grabber;
     pthread_create(&grabber, NULL, frameGrabber, this);
-}
-
-int Camera::status() {
-    return this->cap.isOpened();
 }
 
 Mat Camera::takeSnapshot() {
@@ -104,6 +102,10 @@ vector<Vec2f> Camera::detectLines(Mat img) {
 }
 
 Size Camera::getDimensions() {
-//    return Size(640, 360);
 	return Size(this->cap.get(CV_CAP_PROP_FRAME_WIDTH),this->cap.get(CV_CAP_PROP_FRAME_HEIGHT));
+}
+
+void Camera::setDimension(int width, int height) {
+    this->cap.set(CV_CAP_PROP_FRAME_WIDTH,width);
+    this->cap.set(CV_CAP_PROP_FRAME_HEIGHT,height);
 }

@@ -19,7 +19,8 @@ public:
     camera_resource(Camera *camera);
     list<shared_ptr<Resource>> getResources();
 private:
-    shared_ptr<Resource> cameraGetStatusResource = make_shared< Resource >( );
+    shared_ptr<Resource> cameraSettingsResource = make_shared< Resource >( );
+    shared_ptr<Resource> cameraGetDimensionsResource = make_shared< Resource >( );
     shared_ptr<Resource> cameraSnapshotResource = make_shared< Resource >( );
 
 };

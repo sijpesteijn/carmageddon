@@ -10,10 +10,7 @@ import {Router} from "@angular/router";
 export class HeaderComponent {
     private car: Car;
 
-    constructor(private carService: CarService,
-                private router: Router) {
-
-    }
+    constructor(private carService: CarService, private router: Router) {}
 
     ngOnInit() {
         this.carService.getCar().subscribe(car => {
@@ -27,8 +24,6 @@ export class HeaderComponent {
                 }
             }
             this.car = car;
-
-            console.log('Car ', this.car);
         });
     }
 

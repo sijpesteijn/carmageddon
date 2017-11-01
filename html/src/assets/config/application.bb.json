@@ -8,7 +8,11 @@
     "get" : "http://carmageddon.dev/observer/:type"
   },
   "lifeline": {
-    "ws": "ws://localhost:1984/lifeline"
+    "ws": "ws://carmageddon.dev/lifeline"
+  },
+  "camera": {
+    "settings": "http://carmageddon.dev/camera/settings",
+    "dimensions": "http://carmageddon.dev/camera/dimensions"
   }
 
 }

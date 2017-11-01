@@ -3,7 +3,7 @@
     "get" : "http://carmageddon.dev/observer/:type"
   },
   "lifeline": {
-    "ws": "ws://localhost:1984/lifeline"
+    "ws": "ws://carmageddon.dev/lifeline"
   }
 
 }
